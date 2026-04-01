@@ -57,10 +57,20 @@ public class Polisa{
         if (skladka < skladkaBazowa) skladka = skladkaBazowa;
         return skladka;
     }
-    
-//    public double obliczSkladkeOdnowieniowa(){
-//
-//    }
+
+    public double obliczSkladkeOdnowieniowa(){
+        double wczesniejszaSkladka = obliczSkladkeKoncowa();
+        double skladka = wczesniejszaSkladka;
+        if (poziomRyzyka == 4) skladka = skladka * 1.1;         //wiecej o 10%
+        else if (poziomRyzyka >= 5) skladka = skladka * 1.2;    //wiecej o 20%
+        if (wartoscPojazdu > 60000) skladka = skladka + 150;
+        if (czyBezszkodowyKlient) skladka = skladka * 0.92;     //obnizka o 8%
+        if (czyMaAlarm) skladka = skladka * 0.95;               //obnizka o 5%
+        if (skladka < 0.9 * skladka) skladka = 0.9 * skladka;
+        else if (skladka > 1.25 * wczesniejszaSkladka) skladka = 1.25 * skladka;
+        skladka = Math.round(skladka * 100) / 100.0;            //zaokrąglenie do dwoch miejsc po przecinku
+        return skladka;
+    }
 //    public String pobierzPodsumowanieRyzyka(){
 //
 //    }
