@@ -9,7 +9,7 @@ public class Polisa{
     private boolean czyMaAlarm;
     private boolean czyBezszkodowyKlient;
     private static int liczbaUtworzonychPolis;
-    private static final double OPLATA_ADMINISTRACYJNA;
+    private static final double OPLATA_ADMINISTRACYJNA = 100;
 
     public Polisa(String numerPolisy, String klient, double skladkaBazowa, int poziomRyzyka, double wartoscPojazdu, boolean czyMaAlarm, boolean czyBezszkodowyKlient) {
         this.numerPolisy = numerPolisy;
@@ -47,9 +47,17 @@ public class Polisa{
     }
 
 
-//    public double obliczSkladkeKoncowa(){
-//
-//    }
+    public double obliczSkladkeKoncowa(){
+        double skladka;
+        skladka = skladkaBazowa + poziomRyzyka * 120;
+
+        if (wartoscPojazdu > 60000) skladka = skladka + 400;
+        if (czyMaAlarm) skladka = skladka - 200;
+        if (czyBezszkodowyKlient) skladka = skladka - 200;
+        if (skladka < skladkaBazowa) skladka = skladkaBazowa;
+        return skladka;
+    }
+    
 //    public double obliczSkladkeOdnowieniowa(){
 //
 //    }
@@ -61,21 +69,14 @@ public class Polisa{
 //    }
 
 
-    public void dodajPolise(){
-    }
-
 
     //gettery
     public static int getLiczbaUtworzonychPolis() {
         return liczbaUtworzonychPolis;
     }
 
-    public boolean isCzyBezszkodowyKlient() {
+    public boolean czyBezszkodowyKlient() {
         return czyBezszkodowyKlient;
-    }
-
-    public boolean isCzyMaAlarm() {
-        return czyMaAlarm;
     }
 
     public double getWartoscPojazdu() {
