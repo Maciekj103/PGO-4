@@ -12,24 +12,54 @@ public class BiuroUbezpieczen{
     }
 
     public void wypiszRaport(){
-        System.out.println("Raport");
+        System.out.println("Raport biura: " + nazwa);
+
+        for(Polisa polisa : polisy){
+            System.out.println(polisa);
+            System.out.println("Skladka: " + polisa.obliczSkladkeKoncowa());
+            System.out.println("---------------------");
+        }
     }
 
-//    public double policzLacznaSkladke(){
-//
-//    }
-//    public double policzLacznaPrognozeOdnowien(){
-//
-//    }
-//    public double policzPolisyWysokiegoRyzyka(){
-//
-//    }
-//    public Polisa znajdzPoNumerze(String numerPolisy){
-//
-//    }
-//    public ArrayList<Polisa> wypiszTanszeNiz (double prog){
-//
-//    }
+    public double policzLacznaSkladke(){
+        double suma = 0.0;
+        for (Polisa polisa : polisy){
+            suma = suma + polisa.obliczSkladkeKoncowa();
+        }
+        return suma;
+    }
+    public double policzLacznaPrognozeOdnowien(){
+        double suma = 0.0;
+        for (Polisa polisa : polisy){
+            suma = suma + polisa.obliczSkladkeOdnowieniowa();
+        }
+        return suma;
+    }
+    public int policzPolisyWysokiegoRyzyka(){
+        int liczbaPolis = 0;
+        for (Polisa polisa : polisy){
+            if (polisa.getPoziomRyzyka() >= 4) liczbaPolis ++;
+        }
+        return liczbaPolis;
+    }
+    public Polisa znajdzPoNumerze(String numerPolisy){
+        for (Polisa polisa : polisy) {
+            if (polisa.getNumerPolisy().equals(numerPolisy)) return polisa;
+        }
+        return null;
+    }
+    public void wypiszTanszeNiz (double prog){
+        ArrayList<Polisa> tanszePolisy = new ArrayList<>();
+        for (Polisa polisa : polisy){
+            if (polisa.obliczSkladkeKoncowa() < prog) tanszePolisy.add(polisa);
+        }
+        int i = 1;
+        for (Polisa polisa : tanszePolisy){
+            System.out.println(i + ")" + polisa.toString());
+            i++;
+        }
+//        return tanszePolisy;
+    }
 
 
 }

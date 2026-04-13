@@ -9,7 +9,7 @@ public class Polisa{
     private boolean czyMaAlarm;
     private boolean czyBezszkodowyKlient;
     private static int liczbaUtworzonychPolis;
-    private static final double OPLATA_ADMINISTRACYJNA = 100;
+    private static final double OPLATA_ADMINISTRACYJNA = 100.0;
 
     public Polisa(String numerPolisy, String klient, double skladkaBazowa, int poziomRyzyka, double wartoscPojazdu, boolean czyMaAlarm, boolean czyBezszkodowyKlient) {
         this.numerPolisy = numerPolisy;
@@ -19,6 +19,7 @@ public class Polisa{
         this.wartoscPojazdu = wartoscPojazdu;
         this.czyMaAlarm = czyMaAlarm;
         this.czyBezszkodowyKlient = czyBezszkodowyKlient;
+        liczbaUtworzonychPolis ++;
     }
 
     @Override
@@ -48,8 +49,7 @@ public class Polisa{
 
 
     public double obliczSkladkeKoncowa(){
-        double skladka;
-        skladka = skladkaBazowa + poziomRyzyka * 120;
+        double skladka = skladkaBazowa + OPLATA_ADMINISTRACYJNA + poziomRyzyka * 120;
 
         if (wartoscPojazdu > 60000) skladka = skladka + 400;
         if (czyMaAlarm) skladka = skladka - 200;
@@ -66,17 +66,18 @@ public class Polisa{
         if (wartoscPojazdu > 60000) skladka = skladka + 150;
         if (czyBezszkodowyKlient) skladka = skladka * 0.92;     //obnizka o 8%
         if (czyMaAlarm) skladka = skladka * 0.95;               //obnizka o 5%
-        if (skladka < 0.9 * skladka) skladka = 0.9 * skladka;
-        else if (skladka > 1.25 * wczesniejszaSkladka) skladka = 1.25 * skladka;
+        if (skladka < 0.9 * wczesniejszaSkladka) skladka = 0.9 * wczesniejszaSkladka;
+        else if (skladka > 1.25 * wczesniejszaSkladka) skladka = 1.25 * wczesniejszaSkladka;
         skladka = Math.round(skladka * 100) / 100.0;            //zaokrąglenie do dwoch miejsc po przecinku
         return skladka;
     }
-//    public String pobierzPodsumowanieRyzyka(){
-//
-//    }
-//    public static int pobierzLiczbeUtworzonychPolis(){
-//
-//    }
+    public String pobierzPodsumowanieRyzyka(){
+        return "Poziom ryzyka wynosi: " + poziomRyzyka + "\nBo:\n"+ (czyMaAlarm? "Ma alarm" : "Nie ma alarmu") + "\n" +
+                (czyBezszkodowyKlient ? "Klient jest bezszkodowy." : "Klient nie jest bezszkodowy");
+    }
+    public static int pobierzLiczbeUtworzonychPolis(){
+        return getLiczbaUtworzonychPolis();
+    }
 
 
 
